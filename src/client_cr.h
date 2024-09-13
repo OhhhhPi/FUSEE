@@ -40,6 +40,7 @@ private:
 
     uint64_t server_st_addr_;
     uint64_t server_data_len_;
+    uint64_t server_kv_area;
 
     float miss_rate_threash_;
 
@@ -118,18 +119,32 @@ private:
             entry->acc_cnt ++;
             return;
         }
-        
-        LocalCacheEntry * tmp_value = (LocalCacheEntry *)malloc(sizeof(LocalCacheEntry));
-        memcpy(&tmp_value->l_slot_ptr, slot_info, sizeof(RaceHashSlot));
-        tmp_value->acc_cnt  = 1;
-        tmp_value->miss_cnt = 0;
-        
-        for (int i = 0; i < num_idx_rep_; i ++) {
-            tmp_value->r_slot_addr[i] = r_slot_addr_list[i];
+
+        // lfu eviction
+        if (addr_cache_.size() >= server_kv_area) {
+            std::string lfu_key;
+            uint64_t min_acc_cnt = UINT64_MAX;
+            for (const auto &entry : addr_cache_) {
+                if (entry.second->acc_cnt < min_acc_cnt) {
+                    min_acc_cnt = entry.second->acc_cnt;
+                    lfu_key = entry.first;
+                }
+            }
+            free(addr_cache_[lfu_key]);
+            addr_cache_.erase(lfu_key);
         }
-        
-        addr_cache_[key_str] = tmp_value;
-        // print_log(DEBUG, "\t[%s] %s->slot(%lx) kv(%lx)", __FUNCTION__, key_buf, r_slot_addr_list[0], HashIndexConvert40To64Bits(tmp_value->l_slot_ptr.pointer));
+
+        LocalCacheEntry *new_entry =
+            (LocalCacheEntry *)malloc(sizeof(LocalCacheEntry));
+        memcpy(&new_entry->l_slot_ptr, slot_info, sizeof(RaceHashSlot));
+        new_entry->acc_cnt = 1;
+        new_entry->miss_cnt = 0;
+
+        for (int i = 0; i < num_idx_rep_; i++) {
+          new_entry->r_slot_addr[i] = r_slot_addr_list[i];
+        }
+
+        addr_cache_[key_str] = new_entry;
     }
 
     inline LocalCacheEntry * check_cache(std::string key_str) {

@@ -52,6 +52,7 @@ ClientCR::ClientCR(const struct GlobalConfig * conf) {
 
     server_st_addr_     = conf->server_base_addr;
     server_data_len_    = conf->server_data_len;
+    server_kv_area = conf->server_data_len - (META_AREA_LEN + GC_AREA_LEN + HASH_AREA_LEN);
     micro_workload_num_ = conf->micro_workload_num;
 
     // create cm
