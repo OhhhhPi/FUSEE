@@ -16,17 +16,20 @@ target_link_libraries(test_remote_nm
     libddckv
     pthread
     ibverbs
+    boost_system
 )
 
 target_link_libraries(test_kv_utils
     ${GTEST_BOTH_LIBRARIES}
     libddckv
+    boost_system
     pthread
 )
 
 target_link_libraries(test_nm
     ${GTEST_BOTH_LIBRARIES}
     libddckv
+    boost_system
     pthread
     ibverbs
 )
@@ -41,6 +44,7 @@ target_link_libraries(test_nm
 target_link_libraries(test_client_server 
     libddckv
     pthread
+    boost_system
     ibverbs
 )
 
@@ -55,6 +59,7 @@ target_compile_options(
 target_link_libraries(test_client_client
     ${GTEST_BOTH_LIBRARIES}
     libddckv
+    boost_system
     pthread
     ibverbs
 )
@@ -62,6 +67,7 @@ target_link_libraries(test_client_client
 target_link_libraries(client_kv_shell
     libddckv
     pthread
+    boost_system
     ibverbs
 )
 
@@ -69,6 +75,7 @@ target_link_libraries(test_mm
     ${GTEST_BOTH_LIBRARIES}
     libddckv
     pthread
+    boost_system
     ibverbs
 )
 

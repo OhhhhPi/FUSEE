@@ -9,7 +9,8 @@ list(APPEND source_ddckv
     client.cc
     client_cr.cc)
 
-add_library(libddckv STATIC ${source_ddckv})
+#add_library(libddckv STATIC ${source_ddckv})
+add_library(libddckv SHARED ${source_ddckv})
 
 target_compile_options(
     libddckv
@@ -20,5 +21,5 @@ target_compile_options(
     # "-D_DEBUG"
 )
 
-target_link_libraries(libddckv ${Boost_LIBRARIES} boost_context boost_fiber tbb)
+target_link_libraries(libddckv PUBLIC ${Boost_LIBRARIES} boost_context boost_fiber tbb ibverbs boost_system)
 

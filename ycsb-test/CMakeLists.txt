@@ -1,4 +1,4 @@
-add_library(ycsb_test ycsb_test.cc)
+add_library(ycsb_test SHARED ycsb_test.cc)
 add_executable(ycsb_test_client ycsb_test_client.cc)
 add_executable(ycsb_test_server ycsb_test_server.cc)
 add_executable(ycsb_wl_loader ycsb_wl_loader.cc)
@@ -22,12 +22,14 @@ target_link_libraries(ycsb_test
     libddckv
     pthread
     ibverbs
+    boost_system
 )
 
 target_link_libraries(ycsb_test_multi_client
     libddckv
     ycsb_test
     ibverbs
+    boost_system
 )
 
 target_link_libraries(ycsb_test_client
@@ -35,6 +37,7 @@ target_link_libraries(ycsb_test_client
     ycsb_test
     pthread
     ibverbs
+    boost_system
 )
 
 target_link_libraries(ycsb_test_server
@@ -42,6 +45,7 @@ target_link_libraries(ycsb_test_server
     ycsb_test
     pthread
     ibverbs
+    boost_system
 )
 
 
@@ -50,6 +54,7 @@ libddckv
 ycsb_test
 pthread
 ibverbs
+    boost_system
 )
 
 target_link_libraries(ycsb_wl_loader
@@ -57,6 +62,7 @@ target_link_libraries(ycsb_wl_loader
     ycsb_test
     pthread
     ibverbs
+    boost_system
 )
     
 target_link_libraries(ycsb_multi_client_cont_tpt
@@ -64,6 +70,7 @@ target_link_libraries(ycsb_multi_client_cont_tpt
     libddckv
     pthread
     ibverbs
+    boost_system
 )
     
 target_link_libraries(ycsb_server_crash_multi_client
@@ -71,4 +78,5 @@ target_link_libraries(ycsb_server_crash_multi_client
     libddckv
     pthread
     ibverbs
+    boost_system
 )
